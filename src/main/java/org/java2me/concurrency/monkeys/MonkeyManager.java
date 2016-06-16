@@ -1,5 +1,6 @@
 package org.java2me.concurrency.monkeys;
 
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -16,9 +17,9 @@ import java.util.Random;
 public class MonkeyManager implements Runnable{
 
 	/**
-	 * Traffic agent.
+	 * Semaphores in canyon.
 	 */
-	private Agent agent;
+	private Map<Direction, Semaphore> semaphores;
 	
 	/**
 	 * Number of monkeys to play.
@@ -30,8 +31,9 @@ public class MonkeyManager implements Runnable{
 	 */
 	public MonkeyManager() {
 		super();
-		this.agent = new TrafficAgentFactory().makeTrafficAgent();
-		this.monkeys = 50;
+		
+		this.semaphores = new SemaphoreFactory().makeSemaphores();
+		this.monkeys = 10;
 	}
 	
 	
@@ -55,7 +57,9 @@ public class MonkeyManager implements Runnable{
 			
 			int dir = random(0,1);
 			int timeToReady = random(1,8);
-			final Monkey monkey= new Monkey(Direction.random(dir), timeToReady, agent);
+			
+			Direction direction = Direction.random(dir);
+			final Monkey monkey= new Monkey(direction, timeToReady, semaphores.get(direction));
 			
 			Thread tMonkey = new Thread(monkey){
 				

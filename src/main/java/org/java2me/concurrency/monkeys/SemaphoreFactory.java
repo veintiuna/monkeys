@@ -1,7 +1,9 @@
 package org.java2me.concurrency.monkeys;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author alejandro.contreras
@@ -9,14 +11,14 @@ import java.util.List;
  * Factory for make {@link Agent} instances.
  *
  */
-public class TrafficAgentFactory {
+public class SemaphoreFactory {
 
 	/**
-	 * Make and returns an agent.
+	 * Make and returns an map with semaphores.
 	 * 
-	 * @return {@link Agent} with the traffic agent,
+	 * @return {@link Map} with semaphores.
 	 */
-	public Agent makeTrafficAgent(){
+	public Map<Direction, Semaphore> makeSemaphores(){
 		
 		WaitingToJoinList watingToJoinEastward = new WaitingToJoinList();
 		WaitingToJoinList watingToJoinWestward = new WaitingToJoinList();
@@ -27,6 +29,11 @@ public class TrafficAgentFactory {
 		Semaphore se = new SemaphoreEastward(watingToJoinEastward, watingToJoinWestward, walkingToEastward, walkingToWestward, onExpectedFirstMonkeys);
 		Semaphore so = new SemaphoreWestward(watingToJoinEastward, watingToJoinWestward, walkingToEastward, walkingToWestward, onExpectedFirstMonkeys);
 		
-		return  new TrafficAgent(se, so);
+		Map<Direction, Semaphore> semaphores= new HashMap<Direction, Semaphore>();
+		semaphores.put(Direction.EASTWARD, se);
+		semaphores.put(Direction.WESTWARD, so);
+		
+		return semaphores;
 	}
+	
 }

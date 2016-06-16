@@ -21,11 +21,10 @@ public class Monkey implements Runnable {
 	 */
 	private int timeToReady;
 	
-	
 	/**
 	 * Traffic agent that rules the crossing.
 	 */
-	private Agent agent;
+	private Semaphore agent;
 	
 	/**
 	 * Monkey Constructor.
@@ -34,7 +33,7 @@ public class Monkey implements Runnable {
 	 * @param timeToReady with the time to reach the border.
 	 * @param agent {@link Agent} with the traffic agent.
 	 */
-	public Monkey(Direction direction, int timeToReady, Agent agent) {
+	public Monkey(Direction direction, int timeToReady, Semaphore agent) {
 		super();
 		this.direction = direction;
 		this.timeToReady = timeToReady;
@@ -53,24 +52,24 @@ public class Monkey implements Runnable {
 			 	threadMessage("i'm a monkey going to " + direction + " after " + timeToReady + " seconds");
 			 	
 			 	//add to waitingToJoin (maybe, wait for notify)
-			 	agent.waitingToJoin(direction, self);
+			 	agent.waitingToJoin(self);
 				  
 			 	//compute join list and join
-			 	List<Thread> monkeysOpposite = agent.getJoin(direction, self);
+			 	List<Thread> monkeysOpposite = agent.getJoin(self);
 			 	threadMessage("i'm a monkey going to " + direction + " and ready for join with " +monkeysOpposite);
 			 	for (Thread monkey: monkeysOpposite){
 			 		monkey.join();
 			 	}
 			 	
 			 	//after join, remove from waitingToJoin and get on the rope
-			 	agent.removeFromWaitingToJoin(direction, self);
+			 	agent.removeFromWaitingToJoin(self);
 			 	
 			 	//cross after join
-			 	agent.walking(direction, self);
+			 	agent.walking(self);
 			 	Thread.sleep(4000);
 			 	 	
 			 	//go out
-			 	agent.walkingOut(direction, self);
+			 	agent.walkingOut(self);
 			 	threadMessage("Game Over, " + direction + " at " + System.currentTimeMillis());
 			 	
 			 	
