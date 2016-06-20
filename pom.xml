@@ -4,7 +4,7 @@
 	
 	<groupId>org.java2me.concurrency</groupId>
 	<artifactId>monkeys</artifactId>
-	<version>1.0.2-SNAPSHOT</version>
+	<version>1.1.0</version>
 	<packaging>jar</packaging>
 	
 	<name>monkey-problem</name>
