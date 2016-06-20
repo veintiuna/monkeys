@@ -2,6 +2,8 @@ package org.java2me.concurrency.monkeys;
 
 import java.util.List;
 
+import sun.management.Agent;
+
 
 /**
  * @author alejandro.contreras
@@ -26,6 +28,7 @@ public class Monkey implements Runnable {
 	 */
 	private Semaphore agent;
 	
+
 	/**
 	 * Monkey Constructor.
 	 * 
@@ -51,25 +54,25 @@ public class Monkey implements Runnable {
 			 	Thread.sleep(timeToReady * 1000);
 			 	threadMessage("i'm a monkey going to " + direction + " after " + timeToReady + " seconds");
 			 	
-			 	//add to waitingToJoin (maybe, wait for notify)
-			 	agent.waitingToJoin(self);
+			 	agent.getInLine(self);
 				  
-			 	//compute join list and join
-			 	List<Thread> monkeysOpposite = agent.getJoin(self);
-			 	threadMessage("i'm a monkey going to " + direction + " and ready for join with " +monkeysOpposite);
+			 	//wait turn
+			 	List<Thread> monkeysOpposite = agent.takeTheTime(self);
+			 	if (monkeysOpposite.isEmpty())
+			 		threadMessage("i'm a monkey going to " + direction + " and ready to go");
+			 	else
+			 		threadMessage("i'm a monkey going to " + direction + " and waiting turn for " + monkeysOpposite);
+			 	
 			 	for (Thread monkey: monkeysOpposite){
 			 		monkey.join();
 			 	}
 			 	
-			 	//after join, remove from waitingToJoin and get on the rope
-			 	agent.removeFromWaitingToJoin(self);
+			 	agent.leaveQueue(self);
 			 	
-			 	//cross after join
-			 	agent.walking(self);
+			 	agent.crossCanyon(self);
 			 	Thread.sleep(4000);
 			 	 	
-			 	//go out
-			 	agent.walkingOut(self);
+			 	agent.leaveCanyon(self);
 			 	threadMessage("Game Over, " + direction + " at " + System.currentTimeMillis());
 			 	
 			 	
