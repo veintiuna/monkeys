@@ -76,10 +76,14 @@ public class SemaphoreWestward implements Semaphore {
 		
 		if(!watingToJoinEastward.getMonkeysWaitingToJoin().isEmpty()){
 			Thread firstOppositeMonkey = watingToJoinEastward.getMonkeysWaitingToJoin().get(0);
-			if (!onExpectedFirstMonkeys.contains(monkey)) {
-				monkeys.add(firstOppositeMonkey);
-				onExpectedFirstMonkeys.add(firstOppositeMonkey);
-		    }
+			
+			synchronized(onExpectedFirstMonkeys){
+				if (!onExpectedFirstMonkeys.contains(monkey)) {
+					monkeys.add(firstOppositeMonkey);
+					onExpectedFirstMonkeys.add(firstOppositeMonkey);
+			    }
+			}
+			
 		}
 		
 		if(!walkingToEastward.getMonkeysWalkingAcross().isEmpty()){
