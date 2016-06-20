@@ -3,12 +3,17 @@ package org.java2me.concurrency.monkeys;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
 /**
  * @author alejandro.contreras
  * 
  * Semaphore that rules traffic to westward.
  *
  */
+@Component("semaphoreWestward")
 public class SemaphoreWestward implements Semaphore {
 
 	/**
@@ -37,7 +42,7 @@ public class SemaphoreWestward implements Semaphore {
 	 * 
 	 * Note that list don't need to be synchronized.
 	 */
-	private List<Thread> onExpectedFirstMonkeys;
+	private ExpectedMonkeys onExpectedFirstMonkeys;
 	
 	/**
 	 * Constructor.
@@ -48,11 +53,13 @@ public class SemaphoreWestward implements Semaphore {
 	 * @param walkingToWestward {@link WalkingAcrossList} monkeys walking westward.
 	 * @param onExpectedFirstMonkeys {@link List} with monkeys that are already being expected.
 	 */
-	public SemaphoreWestward(WaitingToJoinList watingToJoinEastward,
-			WaitingToJoinList watingToJoinWestward,
-			WalkingAcrossList walkingToEastward,
-			WalkingAcrossList walkingToWestward,
-			List<Thread> onExpectedFirstMonkeys) {
+	@Autowired
+	public SemaphoreWestward(
+			@Qualifier("waitingEastward") WaitingToJoinList watingToJoinEastward,
+			@Qualifier("waitingWestward") WaitingToJoinList watingToJoinWestward,
+			@Qualifier("walkingEastward") WalkingAcrossList walkingToEastward,
+			@Qualifier("walkingWestward") WalkingAcrossList walkingToWestward,
+			ExpectedMonkeys onExpectedFirstMonkeys) {
 		super();
 		this.watingToJoinEastward = watingToJoinEastward;
 		this.watingToJoinWestward = watingToJoinWestward;
@@ -64,19 +71,20 @@ public class SemaphoreWestward implements Semaphore {
 	/* (non-Javadoc)
 	 * @see org.java2me.concurrency.monkeys.Semaphore#waitingToJoin(java.lang.Thread)
 	 */
-	public void waitingToJoin(Thread monkey) throws InterruptedException {
+	public void getInLine(Thread monkey) throws InterruptedException {
 		watingToJoinWestward.addToWaitingMonkeys(monkey);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.java2me.concurrency.monkeys.Semaphore#getJoin(java.lang.Thread)
 	 */
-	public synchronized List<Thread> getJoin(Thread monkey) {
+	public synchronized List<Thread> takeTheTime(Thread monkey) {
 		List<Thread> monkeys = new ArrayList<Thread>();
 		
 		if(!watingToJoinEastward.getMonkeysWaitingToJoin().isEmpty()){
-			Thread firstOppositeMonkey = watingToJoinEastward.getMonkeysWaitingToJoin().get(0);
 			
+			Thread firstOppositeMonkey = watingToJoinEastward.getMonkeysWaitingToJoin().get(0);
+			//Avoid deadlock
 			synchronized(onExpectedFirstMonkeys){
 				if (!onExpectedFirstMonkeys.contains(monkey)) {
 					monkeys.add(firstOppositeMonkey);
@@ -96,7 +104,7 @@ public class SemaphoreWestward implements Semaphore {
 	/* (non-Javadoc)
 	 * @see org.java2me.concurrency.monkeys.Semaphore#removeFromWaitingToJoin(java.lang.Thread)
 	 */
-	public void removeFromWaitingToJoin(Thread monkey) throws InterruptedException {
+	public void leaveQueue(Thread monkey) throws InterruptedException {
 		watingToJoinWestward.removeFromWaitingMonkeys(monkey);
 		onExpectedFirstMonkeys.remove(monkey);
 	}
@@ -104,14 +112,14 @@ public class SemaphoreWestward implements Semaphore {
 	/* (non-Javadoc)
 	 * @see org.java2me.concurrency.monkeys.Semaphore#walking(java.lang.Thread)
 	 */
-	public void walking(Thread monkey) {
+	public void crossCanyon(Thread monkey) {
 		walkingToWestward.addToWalkingAcrossMonkeys(monkey);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.java2me.concurrency.monkeys.Semaphore#walkingOut(java.lang.Thread)
 	 */
-	public void walkingOut(Thread monkey) {
+	public void leaveCanyon(Thread monkey) {
 		walkingToWestward.removeFromWalkingAcrossMonkeys(monkey);
 	}
 

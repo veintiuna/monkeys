@@ -10,13 +10,13 @@ import java.util.List;
 public interface Semaphore {
 	
 	/**
-	 * Go to the waiting room, before crossing the canyon.
-	 * The waiting room has monkeys that go to the same direction, queuing on a first come.
+	 * Get in line, before crossing the canyon.
+	 * The queue has monkeys that go to the same direction, queuing on a first come.
 	 *
 	 * @param monkey {@link Thread} with the monkey asking for.
 	 * @throws InterruptedException if the wait was interrupted by someone.
 	 */
-	public void waitingToJoin(Thread monkey) throws InterruptedException;
+	public void getInLine(Thread monkey) throws InterruptedException;
 	
 	/**
 	 * Get the list of monkeys in front, which take precedence over you to cross.
@@ -24,7 +24,7 @@ public interface Semaphore {
 	 * @param monkey {@link Thread} with the monkey asking for.
 	 * @return {@link List} with the monkeys opposite, which take precedence to cross.
 	 */
-	public List<Thread> getJoin(Thread monkey);
+	public List<Thread> takeTheTime(Thread monkey);
 	
 	/**
 	 * Leave the waiting room and wait one second to get on the rope.
@@ -32,20 +32,20 @@ public interface Semaphore {
 	 * @param monkey {@link Thread} with the monkey asking for.
 	 * @throws InterruptedException if the wait was interrupted by someone.
 	 */
-	public void removeFromWaitingToJoin(Thread monkey) throws InterruptedException;
+	public void leaveQueue(Thread monkey) throws InterruptedException;
 	
 	/**
 	 * Cross the canyon.
 	 * 
 	 * @param monkey {@link Thread} with the monkey asking for.
 	 */
-	public void walking(Thread monkey);
+	public void crossCanyon(Thread monkey);
 	
 	/**
 	 * Walk out the canyon.
 	 * 
 	 * @param monkey {@link Thread} with the monkey asking for.
 	 */
-	public void walkingOut(Thread monkey);
+	public void leaveCanyon(Thread monkey);
 	
 }
