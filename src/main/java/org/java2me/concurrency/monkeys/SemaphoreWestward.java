@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
  */
 @Component("semaphoreWestward")
 public class SemaphoreWestward implements Semaphore {
-
+	
 	/**
 	 * List with monkeys in the waiting room, to go to eastward.
 	 */
@@ -68,18 +68,22 @@ public class SemaphoreWestward implements Semaphore {
 		this.onExpectedFirstMonkeys = onExpectedFirstMonkeys;
 	}
 	
+	
 	/* (non-Javadoc)
-	 * @see org.java2me.concurrency.monkeys.Semaphore#waitingToJoin(java.lang.Thread)
+	 * @see org.java2me.concurrency.monkeys.Semaphore#getInQueue()
 	 */
-	public void getInLine(Thread monkey) throws InterruptedException {
-		watingToJoinWestward.addToWaitingMonkeys(monkey);
+	public Semaphore getInQueue() throws InterruptedException {
+		watingToJoinWestward.addToWaitingMonkeys(Thread.currentThread());
+		return this;
 	}
 
+	
 	/* (non-Javadoc)
-	 * @see org.java2me.concurrency.monkeys.Semaphore#getJoin(java.lang.Thread)
+	 * @see org.java2me.concurrency.monkeys.Semaphore#takeTime()
 	 */
-	public synchronized List<Thread> takeTheTime(Thread monkey) {
+	public synchronized Semaphore takeTime() throws InterruptedException {
 		List<Thread> monkeys = new ArrayList<Thread>();
+		Thread monkey = Thread.currentThread();
 		
 		if(!watingToJoinEastward.getMonkeysWaitingToJoin().isEmpty()){
 			
@@ -98,29 +102,48 @@ public class SemaphoreWestward implements Semaphore {
 			monkeys.addAll(walkingToEastward.getMonkeysWalkingAcross());
 		}
 		
-		return monkeys;
+		if (monkeys.isEmpty())
+			System.out.println(Thread.currentThread().getName() +  " i'm a monkey going to WESTWARD and ready to go");
+	 	else
+	 		System.out.println(Thread.currentThread().getName() + " i'm a monkey going to WESTWARD and waiting turn for " + monkeys);
+	 		
+	 	
+	 	for (Thread aMonkey: monkeys){
+	 		aMonkey.join();
+	 	}
+	 	
+		
+		return this;
 	}
 
+	
 	/* (non-Javadoc)
-	 * @see org.java2me.concurrency.monkeys.Semaphore#removeFromWaitingToJoin(java.lang.Thread)
+	 * @see org.java2me.concurrency.monkeys.Semaphore#leaveQueue()
 	 */
-	public void leaveQueue(Thread monkey) throws InterruptedException {
+	public Semaphore leaveQueue() throws InterruptedException {
+		Thread monkey = Thread.currentThread();
 		watingToJoinWestward.removeFromWaitingMonkeys(monkey);
 		onExpectedFirstMonkeys.remove(monkey);
+		return this;
 	}
 
+	
 	/* (non-Javadoc)
-	 * @see org.java2me.concurrency.monkeys.Semaphore#walking(java.lang.Thread)
+	 * @see org.java2me.concurrency.monkeys.Semaphore#crossCanyon()
 	 */
-	public void crossCanyon(Thread monkey) {
-		walkingToWestward.addToWalkingAcrossMonkeys(monkey);
+	public Semaphore crossCanyon() throws InterruptedException{
+		walkingToWestward.addToWalkingAcrossMonkeys(Thread.currentThread());
+		Thread.sleep(4000);
+		return this;
 	}
 
+	
 	/* (non-Javadoc)
-	 * @see org.java2me.concurrency.monkeys.Semaphore#walkingOut(java.lang.Thread)
+	 * @see org.java2me.concurrency.monkeys.Semaphore#leaveCanyon()
 	 */
-	public void leaveCanyon(Thread monkey) {
-		walkingToWestward.removeFromWalkingAcrossMonkeys(monkey);
+	public void leaveCanyon() {
+		walkingToWestward.removeFromWalkingAcrossMonkeys(Thread.currentThread());
+		System.out.println(Thread.currentThread().getName() + " Game Over, WESTWARD at " + System.currentTimeMillis());
 	}
 
 }
