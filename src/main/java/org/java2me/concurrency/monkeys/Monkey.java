@@ -2,6 +2,7 @@ package org.java2me.concurrency.monkeys;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 /**
@@ -23,15 +24,21 @@ public class Monkey implements Runnable {
 	private Direction direction;
 	
 	/**
-	 * Time to reach border.
+	 * Time to wake up.
 	 */
 	private int timeToReady;
 	
-	/**
-	 * Traffic agent that rules the crossing.
-	 */
-	private Semaphore agent;
 	
+	/**
+	 * Semaphores context for traffic control.
+	 */
+	@Autowired
+	private SemaphoreContext semaphoreContext;
+	
+	/**
+	 * Handler for get in queue.
+	 */
+	private MonkeyHandler getInQueue;
 
 	/**
 	 * Monkey Constructor.
@@ -40,11 +47,11 @@ public class Monkey implements Runnable {
 	 * @param timeToReady with the time to reach the border.
 	 * @param agent {@link Semaphore} with the traffic agent.
 	 */
-	public Monkey(Direction direction, int timeToReady, Semaphore agent) {
+	public Monkey(Direction direction, int timeToReady,  MonkeyHandler getInQueue) {
 		super();
 		this.direction = direction;
 		this.timeToReady = timeToReady;
-		this.agent = agent;
+		this.getInQueue = getInQueue;
 	}
 
 	/* (non-Javadoc)
@@ -56,12 +63,7 @@ public class Monkey implements Runnable {
 			 	Thread.sleep(timeToReady * 1000);
 			 	System.out.println(Thread.currentThread() + " i'm a monkey going to " + direction + " after " + timeToReady + " seconds");
 			 	
-			 	agent
-			 		.getInQueue()
-			 		.takeTime()
-				  	.leaveQueue()
-				  	.crossCanyon()
-				  	.leaveCanyon();
+			 	getInQueue.handleMonkey(semaphoreContext);
 			 	
 			 	
 		} catch (InterruptedException e) {

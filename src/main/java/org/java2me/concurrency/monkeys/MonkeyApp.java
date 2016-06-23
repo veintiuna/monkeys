@@ -19,20 +19,22 @@ public class MonkeyApp implements CommandLineRunner {
 	@Value("${monkeys.number:10}")
 	private int monkeys;
 	
+	/**
+	 * Bean factory to make object graph.
+	 */
 	@Autowired
 	private BeanFactory beanFactory;
+	
 	
 	/* (non-Javadoc)
 	 * @see org.springframework.boot.CommandLineRunner#run(java.lang.String[])
 	 */
+	@SuppressWarnings("unchecked")
 	public void run(String... args) throws Exception {
-		
-		Map<Direction, Semaphore> semaphores = (Map<Direction, Semaphore>) beanFactory.getBean("semaphores");
 		
 		if(args != null && args.length > 0){
 			monkeys = Integer.valueOf(args[0]);
-		}
-		
+		}	
 		
 		for (int x=0; x<monkeys ;x++) {
 			
@@ -40,7 +42,8 @@ public class MonkeyApp implements CommandLineRunner {
 			int timeToReady = random(1,8);
 			
 			Direction direction = Direction.random(dir);
-			final Monkey monkey= (Monkey) beanFactory.getBean("monkey", direction, timeToReady, semaphores.get(direction));
+			Map<Direction, MonkeyHandler> monkeyHandlerMap =  (Map<Direction, MonkeyHandler>) beanFactory.getBean("monkeyHandlerMap");
+			final Monkey monkey= (Monkey) beanFactory.getBean("monkey", direction, timeToReady, monkeyHandlerMap.get(direction));
 			
 			Thread tMonkey = new Thread(monkey){
 				
@@ -57,7 +60,6 @@ public class MonkeyApp implements CommandLineRunner {
 	}
 
 	
-
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(MonkeyApp.class, args);
 	}
