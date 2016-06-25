@@ -3,7 +3,7 @@ package org.java2me.concurrency.monkeys;
 /**
  * @author alejandro.contreras
  * 
- * Direction of movement on the canyon.
+ * Direction of monkeys on the canyon.
  *
  */
 public enum Direction {
@@ -35,12 +35,12 @@ public enum Direction {
 	}
 	
 	/**
-	 * Utility for generate {@link Direction} values randomly.
+	 * Utility for generate {@link Direction} values.
 	 * 
 	 * @param n a number, zero or one.
 	 * @return {@link Direction} with direction.
 	 */
-	public static Direction random(int n){
+	public static Direction get(int n){
 		return (n == 0)? EASTWARD:WESTWARD; 
 	}
 	

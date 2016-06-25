@@ -1,7 +1,5 @@
 package org.java2me.concurrency.monkeys;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 /**
@@ -19,13 +17,11 @@ public class SemaphoreContext {
 	private ExpectedMonkeys onExpectedFirstMonkeys;
 	
 	
-	
-	@Autowired
 	public SemaphoreContext(
-			@Qualifier("waitingEastward") WaitingToJoinList watingToJoinEastward,
-			@Qualifier("waitingWestward") WaitingToJoinList watingToJoinWestward,
-			@Qualifier("walkingEastward") WalkingAcrossList walkingToEastward,
-			@Qualifier("walkingWestward") WalkingAcrossList walkingToWestward,
+			WaitingToJoinList watingToJoinEastward,
+			WaitingToJoinList watingToJoinWestward,
+			WalkingAcrossList walkingToEastward,
+			WalkingAcrossList walkingToWestward,
 			ExpectedMonkeys onExpectedFirstMonkeys) {
 		
 		super();

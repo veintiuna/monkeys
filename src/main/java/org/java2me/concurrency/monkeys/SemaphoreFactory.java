@@ -1,5 +1,6 @@
 package org.java2me.concurrency.monkeys;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -48,5 +49,17 @@ public class SemaphoreFactory {
 		return new ExpectedMonkeys();
 	}
 	
+	@Bean(name = "semaphoreContext")
+	@Scope(value=BeanDefinition.SCOPE_SINGLETON)
+	public SemaphoreContext getSemaphoreContext(
+			@Qualifier("waitingEastward") WaitingToJoinList watingToJoinEastward,
+			@Qualifier("waitingWestward") WaitingToJoinList watingToJoinWestward,
+			@Qualifier("walkingEastward") WalkingAcrossList walkingToEastward,
+			@Qualifier("walkingWestward") WalkingAcrossList walkingToWestward,
+			ExpectedMonkeys onExpectedFirstMonkeys) {
+		
+		return new SemaphoreContext(watingToJoinEastward, watingToJoinWestward, walkingToWestward, walkingToWestward, onExpectedFirstMonkeys);
+		
+	}
 	
 }

@@ -4,8 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 
 /**
  * @author alejandro.contreras
@@ -68,15 +70,23 @@ public class MonkeyHandlerFactory {
         return new LeaveCanyonWestward();
     }
 	
-	
-	@Bean(name="monkeyHandlerMap")
-	public Map<Direction,MonkeyHandler> createMonkeyHandlerMaps(@Qualifier("getInQueueEastward") MonkeyHandler getInQueueEastward,
-			@Qualifier("getInQueueWestward") MonkeyHandler getInQueueWestward) {
+	@Bean(name="wakeUp")
+	@Scope(BeanDefinition.SCOPE_PROTOTYPE)
+	public MonkeyHandler createWakeUpEastward(@Qualifier("getInQueueEastward") MonkeyHandler getInQueueEastward,
+			@Qualifier("getInQueueWestward") MonkeyHandler getInQueueWestward){
 		
 		Map<Direction,MonkeyHandler> monkeyHandlerMap = new HashMap<Direction, MonkeyHandler>();
 		monkeyHandlerMap.put(Direction.EASTWARD, getInQueueEastward);
 		monkeyHandlerMap.put(Direction.WESTWARD, getInQueueWestward);
 		
-        return monkeyHandlerMap;
-    }
+		
+		RandomUtil util = new RandomUtil();
+		Direction direction = Direction.get(util.random(0, 1));
+		return new WakeUp(monkeyHandlerMap.get(direction), util.random(1,8), direction);
+	}
+	
+	@Bean
+	public RandomUtil getRandomUtil() {
+		return new RandomUtil();
+	}
 }

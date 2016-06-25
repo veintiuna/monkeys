@@ -18,8 +18,8 @@ public class MonkeyFactory {
 	 */
 	@Bean(name="monkey")
     @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-    public Monkey createRuntimeMonkey(Direction direction, int timeToReady, MonkeyHandler monkeyHandler) {
-        return new Monkey(direction, timeToReady, monkeyHandler);
+    public Monkey createRuntimeMonkey(MonkeyHandler monkeyHandler, SemaphoreContext semaphoreContext) {
+        return new Monkey(monkeyHandler, semaphoreContext);
     }
 	
 	
