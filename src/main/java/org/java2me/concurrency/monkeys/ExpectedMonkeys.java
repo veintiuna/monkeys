@@ -3,6 +3,12 @@ package org.java2me.concurrency.monkeys;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author alejandro.contreras
+ * 
+ * List of monkeys who are being expected on the other side.
+ *
+ */
 public class ExpectedMonkeys {
 
 	private List<Thread> expectedMonkeys = new ArrayList<Thread>(); 

@@ -11,9 +11,8 @@ public class MonkeyFactory {
 	/**
 	 * Make a monkey with prototype strategy.
 	 * 
-	 * @param direction {@link Direction} with direction.
-	 * @param timeToReady Value with time to wake up.
 	 * @param monkeyHandler {@link MonkeyHandler} with the first handler to cross the canyon.
+	 * @param semaphoreContext {@link SemaphoreContext} with the semaphores to manage traffic.
 	 * @return {@linkplain Monkey} with the monkey.
 	 */
 	@Bean(name="monkey")

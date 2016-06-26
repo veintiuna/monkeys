@@ -3,8 +3,17 @@ package org.java2me.concurrency.monkeys;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author alejandro.contreras
+ * 
+ * Monkey handler to take time to eastward.
+ *
+ */
 public class TakeTimeEastward implements MonkeyHandler {
 
+	/**
+	 * Next monkey handler.
+	 */
 	private MonkeyHandler leaveQueue;
 	
 	
@@ -13,6 +22,9 @@ public class TakeTimeEastward implements MonkeyHandler {
 		this.leaveQueue = leaveQueue;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.java2me.concurrency.monkeys.MonkeyHandler#handleMonkey(org.java2me.concurrency.monkeys.SemaphoreContext)
+	 */
 	public synchronized void handleMonkey(SemaphoreContext semaphoreContext) throws InterruptedException {
 		List<Thread> monkeys = new ArrayList<Thread>();
 		Thread monkey = Thread.currentThread();

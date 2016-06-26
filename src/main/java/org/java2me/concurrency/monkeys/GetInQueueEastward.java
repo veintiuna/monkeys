@@ -2,9 +2,18 @@ package org.java2me.concurrency.monkeys;
 
 import org.springframework.stereotype.Component;
 
+/**
+ * @author alejandro.contreras
+ * 
+ * Monkey handler to get in queue eastward.
+ *
+ */
 @Component
 public class GetInQueueEastward implements MonkeyHandler {
 
+	/**
+	 * Next monkey handler.
+	 */
 	MonkeyHandler takeTime;
 	
 	

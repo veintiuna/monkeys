@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * @author alejandro.contreras
  * 
- * Rope between canyon banks. 
+ * Monkeys walking on the rope between canyon banks. 
  *
  */
 public class WalkingAcrossList {

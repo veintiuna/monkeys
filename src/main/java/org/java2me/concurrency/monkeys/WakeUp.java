@@ -1,9 +1,26 @@
 package org.java2me.concurrency.monkeys;
 
+/**
+ * @author alejandro.contreras
+ * 
+ * Monkey handler to wake up.
+ *
+ */
 public class WakeUp implements MonkeyHandler {
 
+	/**
+	 * Next monkey handler.
+	 */
 	MonkeyHandler getInQueue;
+	
+	/**
+	 * Time to wake up.
+	 */
 	int timeToWakeUp;
+	
+	/**
+	 * Where it goes?
+	 */
 	Direction direction;
 	
 	
@@ -15,6 +32,9 @@ public class WakeUp implements MonkeyHandler {
 	}
 
 
+	/* (non-Javadoc)
+	 * @see org.java2me.concurrency.monkeys.MonkeyHandler#handleMonkey(org.java2me.concurrency.monkeys.SemaphoreContext)
+	 */
 	public void handleMonkey(SemaphoreContext semaphoreContext) throws InterruptedException {
 		
 		Thread.sleep(timeToWakeUp * 1000);

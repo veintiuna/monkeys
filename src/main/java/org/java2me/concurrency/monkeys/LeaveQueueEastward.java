@@ -1,7 +1,16 @@
 package org.java2me.concurrency.monkeys;
 
+/**
+ * @author alejandro.contreras
+ * 
+ * Monkey handler to leave queue eastward.
+ *
+ */
 public class LeaveQueueEastward implements MonkeyHandler {
 
+	/**
+	 * Next monkey handler.
+	 */
 	MonkeyHandler crossCanyon;
 	
 	public LeaveQueueEastward(MonkeyHandler crossCanyon) {

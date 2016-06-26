@@ -43,8 +43,6 @@ public class MonkeyHandlerFactory {
         return new LeaveCanyonEastward();
     }
 	
-	//
-	
 	@Bean(name="getInQueueWestward")
     public MonkeyHandler createGetInQueueWestward(@Qualifier("takeTimeWestward") MonkeyHandler handler) {
         return new GetInQueueWestward(handler);

@@ -10,10 +10,29 @@ import org.springframework.stereotype.Component;
 @Component
 public class SemaphoreContext {
 
+	/**
+	 * Waiting room to go eastward.
+	 */
 	private WaitingToJoinList watingToJoinEastward;
+	
+	/**
+	 * Waiting room to go westward.
+	 */
 	private WaitingToJoinList watingToJoinWestward;
+	
+	/**
+	 * Walking on the rope eastward.
+	 */
 	private WalkingAcrossList walkingToEastward;
+	
+	/**
+	 * Walking on the rope westward.
+	 */
 	private WalkingAcrossList walkingToWestward;
+	
+	/**
+	 * Monkeys who are being expected on the other side.
+	 */
 	private ExpectedMonkeys onExpectedFirstMonkeys;
 	
 	

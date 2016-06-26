@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author alejandro.contreras
  * 
- * Monkey wanting to cross the canyon.
+ * Monkeys on the canyon going from here to there.
  *
  */
 public class Monkey implements Runnable {

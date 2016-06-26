@@ -8,11 +8,20 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
+/**
+ * @author alejandro.contreras
+ * 
+ * Monkeys manager application.
+ *
+ */
 @SpringBootApplication
 @ComponentScan(basePackages={"org.java2me.concurrency.monkeys"})
 public class MonkeyApp implements CommandLineRunner {
 	
 	
+	/**
+	 * Number of monkeys to play.
+	 */
 	@Value("${monkeys.number:10}")
 	private int monkeys;
 	
@@ -52,6 +61,10 @@ public class MonkeyApp implements CommandLineRunner {
 	}
 
 	
+	/**
+	 * Main access point.
+	 * 
+	 */
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(MonkeyApp.class, args);
 	}
