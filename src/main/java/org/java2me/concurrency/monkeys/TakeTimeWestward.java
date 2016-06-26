@@ -3,6 +3,9 @@ package org.java2me.concurrency.monkeys;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author alejandro.contreras
  * 
@@ -15,6 +18,8 @@ public class TakeTimeWestward implements MonkeyHandler {
 	 * Next monkey handler.
 	 */
 	private MonkeyHandler leaveQueue;
+	
+	private Logger logger = LoggerFactory.getLogger(TakeTimeWestward.class);
 	
 	public TakeTimeWestward(MonkeyHandler leaveQueue) {
 		super();
@@ -46,9 +51,9 @@ public class TakeTimeWestward implements MonkeyHandler {
 		}
 		
 		if (monkeys.isEmpty())
-			System.out.println(Thread.currentThread().getName() +  " i'm a monkey going to WESTWARD and ready to go");
+			logger.info(String.format("%-10s", Thread.currentThread().getName()) +  " ready to go WESTWARD.");
 	 	else
-	 		System.out.println(Thread.currentThread().getName() + " i'm a monkey going to WESTWARD and waiting turn for " + monkeys);
+	 		logger.info(String.format("%-10s", Thread.currentThread().getName()) + " going to WESTWARD and waiting turn for " + monkeys);
 	 		
 	 	
 	 	for (Thread aMonkey: monkeys){

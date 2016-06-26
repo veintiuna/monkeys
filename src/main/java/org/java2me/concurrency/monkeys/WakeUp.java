@@ -1,5 +1,8 @@
 package org.java2me.concurrency.monkeys;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author alejandro.contreras
  * 
@@ -8,6 +11,8 @@ package org.java2me.concurrency.monkeys;
  */
 public class WakeUp implements MonkeyHandler {
 
+	private Logger logger = LoggerFactory.getLogger(WakeUp.class);
+	
 	/**
 	 * Next monkey handler.
 	 */
@@ -24,6 +29,7 @@ public class WakeUp implements MonkeyHandler {
 	Direction direction;
 	
 	
+	
 	public WakeUp(MonkeyHandler getInQueue, int timeToWakeUp, Direction direction) {
 		super();
 		this.getInQueue = getInQueue;
@@ -38,7 +44,7 @@ public class WakeUp implements MonkeyHandler {
 	public void handleMonkey(SemaphoreContext semaphoreContext) throws InterruptedException {
 		
 		Thread.sleep(timeToWakeUp * 1000);
-	 	System.out.println(Thread.currentThread() + " i'm a monkey going to " + direction + " after " + timeToWakeUp + " seconds");
+		logger.info(String.format("%-10s", Thread.currentThread().getName()) + " i'm a monkey going to " + direction + " after " + timeToWakeUp + " seconds.");
 
 	 	getInQueue.handleMonkey(semaphoreContext);
 	}

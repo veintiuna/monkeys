@@ -39,7 +39,7 @@ public class Monkey implements Runnable {
 	 */
 	public void run() {
 		
-		 try {		 	 	
+		 try {		
 			 	wakeUp.handleMonkey(semaphoreContext);	 	
 			 	
 		} catch (InterruptedException e) {

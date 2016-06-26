@@ -1,5 +1,8 @@
 package org.java2me.concurrency.monkeys;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author alejandro.contreras
  * 
@@ -8,9 +11,11 @@ package org.java2me.concurrency.monkeys;
  */
 public class LeaveCanyonWestward implements MonkeyHandler {
 
+	private Logger logger = LoggerFactory.getLogger(LeaveCanyonWestward.class);
+	
 	public void handleMonkey(SemaphoreContext semaphoreContext) throws InterruptedException {
 		semaphoreContext.getWalkingToWestward().removeFromWalkingAcrossMonkeys(Thread.currentThread());
-		System.out.println(Thread.currentThread().getName() + " Game Over, WESTWARD at " + System.currentTimeMillis());
+		logger.info(String.format("%-10s", Thread.currentThread().getName()) + " game over with WESTWARD reached at " + System.currentTimeMillis() + ".");
 
 	}
 
