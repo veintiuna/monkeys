@@ -1,5 +1,9 @@
 package org.java2me.concurrency.monkeys;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +29,7 @@ public class MonkeyApp implements CommandLineRunner {
 	@Value("${monkeys.number:10}")
 	private int monkeys;
 	
+	
 	/**
 	 * Bean factory to make object graph.
 	 */
@@ -40,24 +45,20 @@ public class MonkeyApp implements CommandLineRunner {
 		if(args != null && args.length > 0){
 			monkeys = Integer.valueOf(args[0]);
 		}	
+        	
+		ThreadFactory monkeyThreadFactory = (ThreadFactory) beanFactory.getBean("monkeyThreadFactory");
+		ExecutorService threadPool = Executors.newFixedThreadPool(monkeys, monkeyThreadFactory);
 		
+		 	
 		for (int x=0; x<monkeys ;x++) {
 			SemaphoreContext semaphoreContext = (SemaphoreContext) beanFactory.getBean("semaphoreContext");
 			MonkeyHandler wakeUp = (MonkeyHandler) beanFactory.getBean("wakeUp");
 			final Monkey monkey= (Monkey) beanFactory.getBean("monkey", wakeUp, semaphoreContext);
 			
-			Thread tMonkey = new Thread(monkey){
-				
-				@Override
-				public String toString(){
-					return this.getName();
-				}
-			};
-			
-			tMonkey.start();
-			
+			threadPool.submit(monkey);	
 		}
 		
+		threadPool.shutdown();	
 	}
 
 	

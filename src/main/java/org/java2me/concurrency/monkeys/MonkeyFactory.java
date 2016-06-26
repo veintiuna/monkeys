@@ -21,5 +21,9 @@ public class MonkeyFactory {
         return new Monkey(monkeyHandler, semaphoreContext);
     }
 	
+	@Bean(name="monkeyThreadFactory")
+	public MonkeyThreadFactory getMonkeyThreadFactory() {
+		return new MonkeyThreadFactory();
+	}
 	
 }
